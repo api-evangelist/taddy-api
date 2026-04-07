@@ -1,8 +1,8 @@
 aid: taddy-api
 name: Taddy API
 description: >-
-  Taddy API is what we wished existed when we built our first podcast app. Our
-  API simplifies the process of building a great podcast app by: 
+  Taddy API is what we wished existed when we built our first podcast app. Our API
+  simplifies the process of building a great podcast app by:.
 type: Index
 position: Consumer
 access: 3rd-Party
@@ -18,8 +18,8 @@ apis:
   - aid: taddy-api:taddy-api
     name: Taddy API
     description: >-
-      Taddy API is what we wished existed when we built our first podcast app.
-      Our API simplifies the process of building a great podcast app by: 
+      Taddy API is what we wished existed when we built our first podcast app. Our
+      API simplifies the process of building a great podcast app by:.
     humanURL: https://taddy.org/developers
     tags:
       - Podcast
