@@ -7,8 +7,7 @@ type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-tags:
-  - API
+tags: []
 created: '2025-05-02'
 modified: '2026-03-16'
 url: >-
@@ -22,9 +21,9 @@ apis:
       API simplifies the process of building a great podcast app by:.
     humanURL: https://taddy.org/developers
     tags:
-      - Podcast
       - Audio
       - Media
+      - Podcast
     properties:
       - type: Documentation
         url: https://taddy.org/developers/podcast-api
