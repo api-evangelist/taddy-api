@@ -1,0 +1,199 @@
+name: Taddy API Vocabulary
+description: >-
+  Domain vocabulary for the Taddy Podcast API covering podcast metadata,
+  episode structure, content classification, and GraphQL query patterns.
+created: '2026-05-03'
+modified: '2026-05-03'
+tags:
+  - Audio
+  - GraphQL
+  - Media
+  - Podcasts
+terms:
+  - term: PodcastSeries
+    definition: >-
+      A podcast program identified by a unique UUID, consisting of multiple
+      episodes published on a recurring or serial basis.
+    synonyms:
+      - Podcast
+      - Show
+      - Feed
+    relatedTerms:
+      - PodcastEpisode
+      - RSS Feed
+
+  - term: PodcastEpisode
+    definition: >-
+      A single audio or video installment within a PodcastSeries, published
+      at a specific date and time with metadata including duration, transcript,
+      and chapter information.
+    synonyms:
+      - Episode
+      - Show Episode
+    relatedTerms:
+      - PodcastSeries
+      - Transcript
+      - Chapter
+
+  - term: UUID
+    definition: >-
+      Taddy's internal unique identifier for every podcast series and episode,
+      used as a stable reference across API queries.
+    synonyms:
+      - Unique Identifier
+      - ID
+    relatedTerms:
+      - GUID
+
+  - term: GUID
+    definition: >-
+      The unique identifier for an episode as specified in the RSS feed,
+      distinct from Taddy's internal UUID.
+    relatedTerms:
+      - UUID
+      - RSS Feed
+
+  - term: Transcript
+    definition: >-
+      Machine-generated or human-verified text representation of spoken audio
+      in a podcast episode, accessible as paragraphs or timestamped segments.
+    synonyms:
+      - Episode Transcript
+      - Show Notes Transcript
+    relatedTerms:
+      - TranscriptItem
+      - Chapter
+      - taddyTranscribeStatus
+
+  - term: taddyTranscribeStatus
+    definition: >-
+      Status indicator for whether a podcast or episode has been transcribed
+      by Taddy's transcription system.
+    relatedTerms:
+      - Transcript
+
+  - term: Genre
+    definition: >-
+      A categorical classification for a podcast series (e.g., Society & Culture,
+      Technology, True Crime). A podcast can belong to up to 5 genres ordered
+      by importance.
+    relatedTerms:
+      - PodcastSeries
+      - ContentType
+
+  - term: ContentType
+    definition: >-
+      Indicates whether a podcast is primarily AUDIO or VIDEO content.
+    values:
+      - AUDIO
+      - VIDEO
+    relatedTerms:
+      - Genre
+      - PodcastSeries
+
+  - term: SeriesType
+    definition: >-
+      Indicates whether a podcast is EPISODIC (standalone episodes) or SERIAL
+      (narrative episodes that must be listened to in order).
+    values:
+      - EPISODIC
+      - SERIAL
+    relatedTerms:
+      - EpisodeType
+
+  - term: EpisodeType
+    definition: >-
+      Classification of an individual episode as a full episode, trailer, or
+      bonus content.
+    values:
+      - FULL
+      - TRAILER
+      - BONUS
+    relatedTerms:
+      - SeriesType
+      - PodcastEpisode
+
+  - term: Chapter
+    definition: >-
+      A named segment within a podcast episode with a start time, end time,
+      optional image, and optional URL, allowing listeners to navigate episodes.
+    relatedTerms:
+      - PodcastEpisode
+      - Transcript
+
+  - term: Person
+    definition: >-
+      An individual associated with a podcast or episode in a specific role
+      such as Host, Guest, or Editor.
+    synonyms:
+      - Contributor
+      - Host
+      - Guest
+    relatedTerms:
+      - PodcastSeries
+      - PodcastEpisode
+
+  - term: PopularityRank
+    definition: >-
+      Taddy's calculated popularity ranking for a podcast based on listen
+      and engagement data, updated regularly.
+    relatedTerms:
+      - PodcastSeries
+      - TopCharts
+
+  - term: TopCharts
+    definition: >-
+      Daily-updated list of the most popular podcasts on a given platform
+      (Apple Podcasts, Spotify, etc.) for a specific country.
+    relatedTerms:
+      - PopularityRank
+      - Country
+
+  - term: WebhookFilter
+    definition: >-
+      A programmatically configured filter that triggers webhook events when
+      a specified search term is mentioned in a new podcast episode.
+    synonyms:
+      - Brand Mention Alert
+      - Webhook Subscription
+    relatedTerms:
+      - Webhook
+
+  - term: GraphQL
+    definition: >-
+      Query language used by the Taddy API, allowing clients to request exactly
+      the fields they need. All requests are POST to a single endpoint
+      (https://api.taddy.org).
+    relatedTerms:
+      - Query
+      - Mutation
+
+  - term: X-API-KEY
+    definition: >-
+      Authentication header containing the developer's Taddy API key, required
+      for all API requests.
+    relatedTerms:
+      - X-USER-ID
+
+  - term: X-USER-ID
+    definition: >-
+      Authentication header containing the developer's Taddy user ID, required
+      alongside X-API-KEY for all API requests.
+    relatedTerms:
+      - X-API-KEY
+
+  - term: iTunesInfo
+    definition: >-
+      Supplemental metadata from Apple Podcasts (iTunes) associated with a
+      podcast series, including additional categorization and ratings data.
+    relatedTerms:
+      - PodcastSeries
+      - itunesId
+
+  - term: FeedRefreshDetails
+    definition: >-
+      Metadata describing how frequently Taddy re-fetches and updates a
+      podcast's RSS feed.
+    relatedTerms:
+      - rssUrl
+      - PodcastSeries

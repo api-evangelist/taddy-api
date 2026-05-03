@@ -1,0 +1,380 @@
+openapi: 3.0.3
+info:
+  title: Taddy Podcast API
+  description: >-
+    GraphQL-based API providing access to over 4 million podcasts and 200 million
+    episodes. Features include podcast and episode search, transcript retrieval,
+    top charts, real-time webhooks, and detailed metadata including genres,
+    persons, chapters, and transcription status. All requests are POST to a
+    single GraphQL endpoint.
+  version: 1.0.0
+  contact:
+    name: Taddy Developer Support
+    url: https://taddy.org/developers
+  termsOfService: https://taddy.org/terms
+externalDocs:
+  description: Taddy API Documentation
+  url: https://taddy.org/developers
+servers:
+  - url: https://api.taddy.org
+    description: Taddy GraphQL API
+security:
+  - ApiKeyAuth: []
+    UserIdAuth: []
+paths:
+  /:
+    post:
+      operationId: executeGraphQLQuery
+      summary: Execute GraphQL Query
+      description: >-
+        Execute a GraphQL query against the Taddy API. Supports queries for
+        podcast series, episodes, search, top charts, transcripts, and webhooks.
+      tags:
+        - GraphQL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            examples:
+              GetPodcastSeries:
+                summary: Get Podcast Series
+                value:
+                  query: >-
+                    { getPodcastSeries(name: "This American Life") {
+                      uuid name description imageUrl totalEpisodesCount
+                      genres { name }
+                      language { name }
+                    } }
+              SearchPodcasts:
+                summary: Search Podcasts
+                value:
+                  query: >-
+                    { searchForTerm(term: "technology", searchContentType: PODCASTSERIES) {
+                      searchId podcastSeries {
+                        uuid name description imageUrl
+                      }
+                    } }
+              GetPodcastEpisode:
+                summary: Get Podcast Episode
+                value:
+                  query: >-
+                    { getPodcastEpisode(uuid: "episode-uuid") {
+                      uuid name description audioUrl duration datePublished
+                      transcript
+                    } }
+              GetTopCharts:
+                summary: Get Top Charts
+                value:
+                  query: >-
+                    { getTopChartsByCountry(taddyType: PODCASTSERIES, country: US) {
+                      podcastSeries { uuid name imageUrl popularityRank { rank } }
+                    } }
+              GetApiRequestsRemaining:
+                summary: Get API Requests Remaining
+                value:
+                  query: '{ getApiRequestsRemaining }'
+      responses:
+        '200':
+          description: GraphQL response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLResponse'
+        '400':
+          description: Bad request - invalid GraphQL query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLError'
+        '401':
+          description: Unauthorized - invalid or missing API key
+        '429':
+          description: Too Many Requests - rate limit exceeded
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Your Taddy API key from the developer dashboard
+    UserIdAuth:
+      type: apiKey
+      in: header
+      name: X-USER-ID
+      description: Your Taddy user ID from the developer dashboard
+  schemas:
+    GraphQLRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query string
+        variables:
+          type: object
+          description: GraphQL variables for the query
+          additionalProperties: true
+        operationName:
+          type: string
+          description: Optional name for the GraphQL operation
+    GraphQLResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: GraphQL response data
+          additionalProperties: true
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphQLError'
+    GraphQLError:
+      type: object
+      properties:
+        message:
+          type: string
+        locations:
+          type: array
+          items:
+            type: object
+            properties:
+              line:
+                type: integer
+              column:
+                type: integer
+        path:
+          type: array
+          items:
+            type: string
+    PodcastSeries:
+      type: object
+      description: A podcast series with full metadata
+      properties:
+        uuid:
+          type: string
+          description: Taddy unique identifier (UUID)
+        name:
+          type: string
+          description: Podcast title
+        description:
+          type: string
+          description: Podcast summary/description
+        imageUrl:
+          type: string
+          format: uri
+          description: Cover art URL
+        websiteUrl:
+          type: string
+          format: uri
+          description: Podcast website
+        rssUrl:
+          type: string
+          format: uri
+          description: RSS feed URL
+        totalEpisodesCount:
+          type: integer
+          description: Total number of episodes
+        datePublished:
+          type: integer
+          description: Publication date as epoch timestamp (seconds)
+        itunesId:
+          type: integer
+          description: Apple Podcasts iTunes ID
+        language:
+          $ref: '#/components/schemas/Language'
+        seriesType:
+          type: string
+          enum:
+            - EPISODIC
+            - SERIAL
+          description: Podcast format type
+        contentType:
+          type: string
+          enum:
+            - AUDIO
+            - VIDEO
+          description: Primary content type
+        isExplicitContent:
+          type: boolean
+          description: Whether the podcast contains explicit content
+        isCompleted:
+          type: boolean
+          description: Whether the podcast has concluded
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        persons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+        popularityRank:
+          $ref: '#/components/schemas/PopularityRank'
+        taddyTranscribeStatus:
+          type: string
+          description: Transcription availability status
+        hash:
+          type: string
+          description: Hash of podcast details for change detection
+        childrenHash:
+          type: string
+          description: Hash of episode details for change detection
+    PodcastEpisode:
+      type: object
+      description: A single podcast episode
+      properties:
+        uuid:
+          type: string
+          description: Taddy unique identifier (UUID)
+        guid:
+          type: string
+          description: RSS feed unique identifier
+        name:
+          type: string
+          description: Episode title
+        description:
+          type: string
+          description: Episode description/show notes
+        subtitle:
+          type: string
+          description: Short description (max 255 characters)
+        audioUrl:
+          type: string
+          format: uri
+          description: Audio file URL
+        videoUrl:
+          type: string
+          format: uri
+          description: Video file URL
+        imageUrl:
+          type: string
+          format: uri
+          description: Episode cover art
+        websiteUrl:
+          type: string
+          format: uri
+          description: Episode web page
+        datePublished:
+          type: integer
+          description: Publication date as epoch timestamp (seconds)
+        duration:
+          type: integer
+          description: Episode length in seconds
+        fileLength:
+          type: integer
+          description: File size in bytes
+        fileType:
+          type: string
+          description: MIME type of audio/video file
+        seasonNumber:
+          type: integer
+          description: Season number
+        episodeNumber:
+          type: integer
+          description: Episode number
+        episodeType:
+          type: string
+          enum:
+            - FULL
+            - TRAILER
+            - BONUS
+          description: Episode classification
+        isExplicitContent:
+          type: boolean
+        isRemoved:
+          type: boolean
+          description: Whether episode was removed from RSS feed
+        isBlocked:
+          type: boolean
+          description: Whether episode is blocked for policy violation
+        transcript:
+          type: array
+          items:
+            type: string
+          description: Parsed transcript text paragraphs
+        chapters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chapter'
+        persons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+        podcastSeries:
+          $ref: '#/components/schemas/PodcastSeries'
+        hash:
+          type: string
+          description: Hash for change detection
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    Language:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Person:
+      type: object
+      description: A person associated with a podcast (host, guest, etc.)
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          description: Role on the podcast (Host, Guest, Editor, etc.)
+        group:
+          type: string
+        imageUrl:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+    PopularityRank:
+      type: object
+      properties:
+        rank:
+          type: integer
+          description: Popularity rank position
+        rankLastWeek:
+          type: integer
+        rankChangePercentage:
+          type: number
+    Chapter:
+      type: object
+      properties:
+        title:
+          type: string
+        startTime:
+          type: number
+          description: Start time in seconds
+        endTime:
+          type: number
+        imageUrl:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+    WebhookFilter:
+      type: object
+      description: Filter configuration for programmatic webhook management
+      properties:
+        uuid:
+          type: string
+        searchTerm:
+          type: string
+          description: Term to filter webhook events
+        isActive:
+          type: boolean

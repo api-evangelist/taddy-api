@@ -1,0 +1,74 @@
+extends: spectral:oas
+rules:
+  taddy-graphql-endpoint-must-be-post:
+    description: Taddy GraphQL API only accepts POST requests
+    message: "GraphQL endpoints must use POST method"
+    severity: error
+    given: "$.paths['/'].get"
+    then:
+      function: undefined
+
+  taddy-request-must-include-query:
+    description: All GraphQL requests must include a query field
+    message: "Request body must include a 'query' property"
+    severity: error
+    given: "$.paths['/'].post.requestBody.content['application/json'].schema"
+    then:
+      field: required
+      function: truthy
+
+  taddy-auth-headers-documented:
+    description: API must document X-API-KEY and X-USER-ID authentication headers
+    message: "API key authentication headers must be documented in securitySchemes"
+    severity: warn
+    given: "$.components.securitySchemes"
+    then:
+      function: truthy
+
+  taddy-operations-have-examples:
+    description: GraphQL operations should include request examples
+    message: "Request body should include examples for key GraphQL queries"
+    severity: info
+    given: "$.paths['/'].post.requestBody.content['application/json'].examples"
+    then:
+      function: truthy
+
+  taddy-response-includes-data-field:
+    description: GraphQL responses should document the data wrapper
+    message: "Response schema should include a 'data' property"
+    severity: warn
+    given: "$.paths['/'].post.responses['200'].content['application/json'].schema.properties"
+    then:
+      field: data
+      function: truthy
+
+  taddy-schemas-have-descriptions:
+    description: All schema components should have descriptions
+    message: "{{property}} is missing a description"
+    severity: warn
+    given: "$.components.schemas[*]"
+    then:
+      field: description
+      function: truthy
+
+  taddy-uuid-fields-are-strings:
+    description: UUID identifier fields must be typed as string
+    message: "UUID field '{{property}}' should be type: string"
+    severity: error
+    given: "$.components.schemas[*].properties.uuid"
+    then:
+      field: type
+      function: pattern
+      functionOptions:
+        match: "^string$"
+
+  taddy-url-fields-use-uri-format:
+    description: URL fields should use format uri
+    message: "URL field '{{property}}' should use format: uri"
+    severity: warn
+    given: "$.components.schemas[*].properties[*Url]"
+    then:
+      field: format
+      function: pattern
+      functionOptions:
+        match: "^uri$"

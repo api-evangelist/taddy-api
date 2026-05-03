@@ -1,0 +1,216 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Taddy Podcast API"
+  description: >-
+    GraphQL API providing access to over 4 million podcasts and 200 million
+    episodes with search, transcripts, top charts, and webhooks.
+  tags:
+    - Audio
+    - GraphQL
+    - Media
+    - Podcasts
+    - Transcripts
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      TADDY_API_KEY: TADDY_API_KEY
+      TADDY_USER_ID: TADDY_USER_ID
+
+capability:
+  consumes:
+    - type: http
+      namespace: taddy-podcast
+      baseUri: https://api.taddy.org
+      description: "GraphQL API for podcast series and episode data"
+      authentication:
+        type: apikey
+        key: X-API-KEY
+        value: "{{TADDY_API_KEY}}"
+        placement: header
+      resources:
+        - name: graphql
+          path: /
+          description: "GraphQL endpoint for all Taddy API queries"
+          operations:
+            - name: get-podcast-series
+              method: POST
+              description: "Retrieve podcast series details by name or UUID"
+              body:
+                type: json
+                data:
+                  query: "{ getPodcastSeries(name: \"{{tools.podcast_name}}\") { uuid name description imageUrl totalEpisodesCount language { name } genres { name } popularityRank { rank } } }"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.getPodcastSeries"
+
+            - name: search-podcasts
+              method: POST
+              description: "Search podcasts and episodes by term"
+              body:
+                type: json
+                data:
+                  query: "{ searchForTerm(term: \"{{tools.search_term}}\", searchContentType: PODCASTSERIES) { searchId podcastSeries { uuid name description imageUrl } } }"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.searchForTerm"
+
+            - name: get-podcast-episode
+              method: POST
+              description: "Retrieve episode details including transcript"
+              body:
+                type: json
+                data:
+                  query: "{ getPodcastEpisode(uuid: \"{{tools.episode_uuid}}\") { uuid name description audioUrl duration datePublished transcript episodeNumber seasonNumber } }"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.getPodcastEpisode"
+
+            - name: get-top-charts
+              method: POST
+              description: "Retrieve top chart podcasts by country"
+              body:
+                type: json
+                data:
+                  query: "{ getTopChartsByCountry(taddyType: PODCASTSERIES, country: {{tools.country}}) { podcastSeries { uuid name imageUrl popularityRank { rank } } } }"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.getTopChartsByCountry"
+
+            - name: get-api-requests-remaining
+              method: POST
+              description: "Check remaining monthly API request quota"
+              body:
+                type: json
+                data:
+                  query: "{ getApiRequestsRemaining }"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: integer
+                  value: "$.data.getApiRequestsRemaining"
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: taddy-podcast-rest
+      resources:
+        - path: /v1/podcasts
+          name: podcasts
+          description: "Search and retrieve podcast series"
+          operations:
+            - method: GET
+              name: search-podcasts
+              description: "Search for podcasts by name or term"
+              call: "taddy-podcast.search-podcasts"
+              with:
+                search_term: "rest.term"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/podcasts/{name}
+          name: podcast-series
+          description: "Get a specific podcast series"
+          operations:
+            - method: GET
+              name: get-podcast-series
+              description: "Retrieve podcast series by name"
+              call: "taddy-podcast.get-podcast-series"
+              with:
+                podcast_name: "rest.name"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/episodes/{uuid}
+          name: podcast-episode
+          description: "Get a specific episode with transcript"
+          operations:
+            - method: GET
+              name: get-podcast-episode
+              description: "Retrieve episode details and transcript"
+              call: "taddy-podcast.get-podcast-episode"
+              with:
+                episode_uuid: "rest.uuid"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/top-charts
+          name: top-charts
+          description: "Top chart podcasts by country"
+          operations:
+            - method: GET
+              name: get-top-charts
+              description: "Get top charting podcasts"
+              call: "taddy-podcast.get-top-charts"
+              with:
+                country: "rest.country"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: taddy-podcast-mcp
+      transport: http
+      tools:
+        - name: search-podcasts
+          description: "Search for podcast series by keyword or topic"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "taddy-podcast.search-podcasts"
+          with:
+            search_term: "tools.search_term"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-podcast-series
+          description: "Get full details for a podcast series by name"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "taddy-podcast.get-podcast-series"
+          with:
+            podcast_name: "tools.podcast_name"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-podcast-episode
+          description: "Retrieve a podcast episode with transcript and chapters"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "taddy-podcast.get-podcast-episode"
+          with:
+            episode_uuid: "tools.episode_uuid"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-top-charts
+          description: "Get top charting podcasts for a given country"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "taddy-podcast.get-top-charts"
+          with:
+            country: "tools.country"
+          outputParameters:
+            - type: object
+              mapping: "$."

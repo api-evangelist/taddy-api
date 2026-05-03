@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://taddy.org/schemas/podcast-series",
+  "title": "Podcast Series",
+  "description": "A podcast series with full metadata from the Taddy API",
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "description": "Taddy unique identifier (UUID)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Podcast title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Podcast summary or description"
+    },
+    "imageUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Cover art URL"
+    },
+    "websiteUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Podcast website URL"
+    },
+    "rssUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "RSS feed URL"
+    },
+    "rssOwnerName": {
+      "type": "string",
+      "description": "RSS feed owner name"
+    },
+    "rssOwnerPublicEmail": {
+      "type": "string",
+      "format": "email",
+      "description": "RSS feed owner public email"
+    },
+    "authorName": {
+      "type": "string",
+      "description": "Podcast author name"
+    },
+    "copyright": {
+      "type": "string",
+      "description": "Copyright details"
+    },
+    "totalEpisodesCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of episodes"
+    },
+    "datePublished": {
+      "type": "integer",
+      "description": "Publication date as Unix epoch timestamp in seconds"
+    },
+    "itunesId": {
+      "type": "integer",
+      "description": "Apple Podcasts iTunes identifier"
+    },
+    "seriesType": {
+      "type": "string",
+      "enum": ["EPISODIC", "SERIAL"],
+      "description": "Podcast format type"
+    },
+    "contentType": {
+      "type": "string",
+      "enum": ["AUDIO", "VIDEO"],
+      "description": "Primary content type"
+    },
+    "isExplicitContent": {
+      "type": "boolean",
+      "description": "Whether the podcast contains explicit content"
+    },
+    "isCompleted": {
+      "type": "boolean",
+      "description": "Whether the podcast series has concluded"
+    },
+    "isBlocked": {
+      "type": "boolean",
+      "description": "Whether the podcast is blocked"
+    },
+    "genres": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        }
+      },
+      "maxItems": 5,
+      "description": "Podcast genres, ordered by importance (max 5)"
+    },
+    "language": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "description": "Language spoken on the podcast"
+    },
+    "persons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uuid": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "group": { "type": "string" },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "href": { "type": "string", "format": "uri" }
+        }
+      },
+      "description": "People associated with the podcast"
+    },
+    "popularityRank": {
+      "type": "object",
+      "properties": {
+        "rank": { "type": "integer" },
+        "rankLastWeek": { "type": "integer" },
+        "rankChangePercentage": { "type": "number" }
+      }
+    },
+    "taddyTranscribeStatus": {
+      "type": "string",
+      "description": "Transcription availability status for the series"
+    },
+    "hash": {
+      "type": "string",
+      "description": "Hash of all podcast details for change detection"
+    },
+    "childrenHash": {
+      "type": "string",
+      "description": "Hash of all episode details for episode change detection"
+    }
+  },
+  "required": ["uuid", "name"]
+}

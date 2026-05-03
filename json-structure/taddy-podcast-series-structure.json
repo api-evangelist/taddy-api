@@ -1,0 +1,36 @@
+{
+  "name": "PodcastSeries",
+  "description": "Top-level representation of a podcast in the Taddy API",
+  "fields": [
+    { "name": "uuid", "type": "ID", "required": true, "description": "Taddy unique identifier" },
+    { "name": "name", "type": "String", "required": true, "description": "Podcast title" },
+    { "name": "description", "type": "String", "description": "Podcast summary" },
+    { "name": "imageUrl", "type": "String (URI)", "description": "Cover art URL" },
+    { "name": "websiteUrl", "type": "String (URI)", "description": "Podcast website" },
+    { "name": "rssUrl", "type": "String (URI)", "description": "RSS feed URL" },
+    { "name": "rssOwnerName", "type": "String", "description": "RSS feed owner" },
+    { "name": "authorName", "type": "String", "description": "Podcast author" },
+    { "name": "copyright", "type": "String", "description": "Copyright statement" },
+    { "name": "totalEpisodesCount", "type": "Int", "description": "Total episode count" },
+    { "name": "datePublished", "type": "Int (Epoch)", "description": "Publication date" },
+    { "name": "itunesId", "type": "Int", "description": "Apple Podcasts ID" },
+    { "name": "seriesType", "type": "Enum (EPISODIC|SERIAL)", "description": "Format type" },
+    { "name": "contentType", "type": "Enum (AUDIO|VIDEO)", "description": "Primary content type" },
+    { "name": "isExplicitContent", "type": "Boolean", "description": "Explicit content flag" },
+    { "name": "isCompleted", "type": "Boolean", "description": "Series concluded flag" },
+    { "name": "isBlocked", "type": "Boolean", "description": "Blocked flag" },
+    { "name": "genres", "type": "Array[Genre]", "description": "Up to 5 genres ordered by importance" },
+    { "name": "language", "type": "Language", "description": "Primary language" },
+    { "name": "persons", "type": "Array[Person]", "description": "Hosts and contributors" },
+    { "name": "episodes", "type": "Array[PodcastEpisode]", "description": "Paginated episode list", "parameters": ["sortOrder", "page", "limitPerPage", "searchTerm", "includeRemovedEpisodes"] },
+    { "name": "popularityRank", "type": "PopularityRank", "description": "Taddy popularity ranking" },
+    { "name": "taddyTranscribeStatus", "type": "Enum", "description": "Transcription status" },
+    { "name": "hash", "type": "String", "description": "Change detection hash" },
+    { "name": "childrenHash", "type": "String", "description": "Episode change detection hash" }
+  ],
+  "relationships": [
+    { "field": "episodes", "relatesTo": "PodcastEpisode", "cardinality": "one-to-many" },
+    { "field": "persons", "relatesTo": "Person", "cardinality": "many-to-many" },
+    { "field": "genres", "relatesTo": "Genre", "cardinality": "many-to-many" }
+  ]
+}

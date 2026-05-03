@@ -1,0 +1,40 @@
+{
+  "name": "PodcastEpisode",
+  "description": "A single episode within a PodcastSeries in the Taddy API",
+  "fields": [
+    { "name": "uuid", "type": "ID", "required": true, "description": "Taddy unique identifier" },
+    { "name": "guid", "type": "String", "description": "RSS feed unique identifier" },
+    { "name": "name", "type": "String", "required": true, "description": "Episode title" },
+    { "name": "description", "type": "String", "description": "Episode description/show notes" },
+    { "name": "subtitle", "type": "String", "description": "Short description (max 255 chars)" },
+    { "name": "audioUrl", "type": "String (URI)", "description": "Audio file URL" },
+    { "name": "videoUrl", "type": "String (URI)", "description": "Video file URL" },
+    { "name": "imageUrl", "type": "String (URI)", "description": "Episode cover art URL" },
+    { "name": "websiteUrl", "type": "String (URI)", "description": "Episode webpage URL" },
+    { "name": "datePublished", "type": "Int (Epoch)", "description": "Publication timestamp in seconds" },
+    { "name": "duration", "type": "Int", "description": "Duration in seconds" },
+    { "name": "fileLength", "type": "Int", "description": "File size in bytes" },
+    { "name": "fileType", "type": "String", "description": "MIME type" },
+    { "name": "seasonNumber", "type": "Int", "description": "Season number" },
+    { "name": "episodeNumber", "type": "Int", "description": "Episode number" },
+    { "name": "episodeType", "type": "Enum (FULL|TRAILER|BONUS)", "description": "Episode classification" },
+    { "name": "isExplicitContent", "type": "Boolean", "description": "Explicit content flag" },
+    { "name": "isRemoved", "type": "Boolean", "description": "Removed from RSS feed flag" },
+    { "name": "isBlocked", "type": "Boolean", "description": "Policy blocked flag" },
+    { "name": "transcript", "type": "Array[String]", "description": "Parsed transcript paragraphs" },
+    { "name": "transcriptUrls", "type": "Array[String]", "description": "Transcript file download URLs" },
+    { "name": "transcriptUrlsWithDetails", "type": "Array[TranscriptLink]", "description": "Enhanced transcript link details" },
+    { "name": "taddyTranscribeStatus", "type": "Enum", "description": "Transcription processing status" },
+    { "name": "chapters", "type": "Array[Chapter]", "description": "Episode chapter markers" },
+    { "name": "chaptersUrls", "type": "Array[String]", "description": "Chapter file download URLs" },
+    { "name": "persons", "type": "Array[Person]", "description": "Hosts, guests, and contributors" },
+    { "name": "podcastSeries", "type": "PodcastSeries", "description": "Parent podcast series" },
+    { "name": "descriptionLinks", "type": "Array[String]", "description": "Extracted URLs from description" },
+    { "name": "hash", "type": "String", "description": "Change detection hash" }
+  ],
+  "relationships": [
+    { "field": "podcastSeries", "relatesTo": "PodcastSeries", "cardinality": "many-to-one" },
+    { "field": "persons", "relatesTo": "Person", "cardinality": "many-to-many" },
+    { "field": "chapters", "relatesTo": "Chapter", "cardinality": "one-to-many" }
+  ]
+}

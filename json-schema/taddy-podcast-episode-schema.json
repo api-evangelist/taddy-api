@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://taddy.org/schemas/podcast-episode",
+  "title": "Podcast Episode",
+  "description": "A single podcast episode from the Taddy API",
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "description": "Taddy unique identifier (UUID)"
+    },
+    "guid": {
+      "type": "string",
+      "description": "Episode unique identifier from the RSS feed"
+    },
+    "name": {
+      "type": "string",
+      "description": "Episode title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Episode description or show notes"
+    },
+    "subtitle": {
+      "type": "string",
+      "maxLength": 255,
+      "description": "Shortened episode description"
+    },
+    "audioUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Audio file URL"
+    },
+    "videoUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Video file URL"
+    },
+    "imageUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Episode cover art URL"
+    },
+    "websiteUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Episode web page URL"
+    },
+    "datePublished": {
+      "type": "integer",
+      "description": "Publication date as Unix epoch timestamp in seconds"
+    },
+    "duration": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Episode length in seconds"
+    },
+    "fileLength": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Audio/video file size in bytes"
+    },
+    "fileType": {
+      "type": "string",
+      "description": "MIME type of the audio/video file"
+    },
+    "seasonNumber": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Season number"
+    },
+    "episodeNumber": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Episode number within the season"
+    },
+    "episodeType": {
+      "type": "string",
+      "enum": ["FULL", "TRAILER", "BONUS"],
+      "description": "Episode classification type"
+    },
+    "isExplicitContent": {
+      "type": "boolean",
+      "description": "Whether the episode contains explicit content"
+    },
+    "isRemoved": {
+      "type": "boolean",
+      "description": "Whether the episode was removed from the RSS feed"
+    },
+    "isBlocked": {
+      "type": "boolean",
+      "description": "Whether the episode is blocked for a policy violation"
+    },
+    "transcript": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Episode transcript as parsed text paragraphs"
+    },
+    "transcriptUrls": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "Download links for transcript files"
+    },
+    "taddyTranscribeStatus": {
+      "type": "string",
+      "description": "Transcription processing status"
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "startTime": { "type": "number" },
+          "endTime": { "type": "number" },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      },
+      "description": "Episode chapter markers"
+    },
+    "persons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uuid": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "href": { "type": "string", "format": "uri" }
+        }
+      },
+      "description": "Hosts, guests, and contributors on this episode"
+    },
+    "hash": {
+      "type": "string",
+      "description": "Hash for change detection"
+    }
+  },
+  "required": ["uuid", "name"]
+}

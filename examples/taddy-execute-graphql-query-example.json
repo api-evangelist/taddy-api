@@ -1,0 +1,44 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.taddy.org",
+    "headers": {
+      "Content-Type": "application/json",
+      "X-USER-ID": "7",
+      "X-API-KEY": "96c5007c18858e86dabcdef1234567890"
+    },
+    "body": {
+      "query": "{ getPodcastSeries(name: \"This American Life\") { uuid name description imageUrl totalEpisodesCount datePublished itunesId language { name } seriesType contentType isExplicitContent genres { name } popularityRank { rank } rssUrl websiteUrl } }"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "data": {
+        "getPodcastSeries": {
+          "uuid": "a09a8fd0-1543-4a82-982e-8b8fcaaa3e6f",
+          "name": "This American Life",
+          "description": "This American Life is a weekly public radio program, heard by 2.2 million people on more than 500 stations. Another 2.5 million people download the weekly podcast.",
+          "imageUrl": "https://content.production.cdn.art19.com/images/01/06/62/a0/010662a0-8f47-4d2c-9cba-e4a278a80faa/f9e808c069e7b2413b03bbf29e0d9a9b1a8e12faee4e2882b14a9e2e77dbe03ab7feebb5f75ab59e80b16a3e5eb0fd0c16adeadefe4c00c2cca1fb1fb1978dea2.jpeg",
+          "totalEpisodesCount": 812,
+          "datePublished": 893750400,
+          "itunesId": 201671138,
+          "language": { "name": "English" },
+          "seriesType": "EPISODIC",
+          "contentType": "AUDIO",
+          "isExplicitContent": false,
+          "genres": [
+            { "name": "Society & Culture" },
+            { "name": "Documentary" }
+          ],
+          "popularityRank": { "rank": 4 },
+          "rssUrl": "https://feeds.simplecast.com/EmVW7VGp",
+          "websiteUrl": "https://www.thisamericanlife.org"
+        }
+      }
+    }
+  }
+}
