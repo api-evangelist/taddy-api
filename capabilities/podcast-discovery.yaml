@@ -1,166 +1,227 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Taddy Podcast Discovery"
-  description: >-
-    Workflow capability for discovering, searching, and analyzing podcast content
-    via the Taddy API. Enables content teams, app developers, and media researchers
-    to find podcasts, retrieve episode transcripts, explore top charts, and
-    monitor brand mentions via webhooks.
+  label: Taddy Podcast Discovery
+  description: Workflow capability for discovering, searching, and analyzing podcast content via the Taddy API. Enables content
+    teams, app developers, and media researchers to find podcasts, retrieve episode transcripts, explore top charts, and monitor
+    brand mentions via webhooks.
   tags:
-    - Audio
-    - Content Discovery
-    - Media
-    - Podcasts
-    - Transcripts
-  created: "2026-05-03"
-  modified: "2026-05-03"
-
+  - Audio
+  - Content Discovery
+  - Media
+  - Podcasts
+  - Transcripts
+  created: '2026-05-03'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      TADDY_API_KEY: TADDY_API_KEY
-      TADDY_USER_ID: TADDY_USER_ID
-
+- namespace: env
+  keys:
+    TADDY_API_KEY: TADDY_API_KEY
+    TADDY_USER_ID: TADDY_USER_ID
 capability:
   consumes:
-    - import: taddy-podcast
-      location: ./shared/taddy-podcast.yaml
-
+  - type: http
+    namespace: taddy-podcast
+    baseUri: https://api.taddy.org
+    description: GraphQL API for podcast series and episode data
+    authentication:
+      type: apikey
+      key: X-API-KEY
+      value: '{{TADDY_API_KEY}}'
+      placement: header
+    resources:
+    - name: graphql
+      path: /
+      description: GraphQL endpoint for all Taddy API queries
+      operations:
+      - name: get-podcast-series
+        method: POST
+        description: Retrieve podcast series details by name or UUID
+        body:
+          type: json
+          data:
+            query: '{ getPodcastSeries(name: "{{tools.podcast_name}}") { uuid name description imageUrl totalEpisodesCount
+              language { name } genres { name } popularityRank { rank } } }'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.data.getPodcastSeries
+      - name: search-podcasts
+        method: POST
+        description: Search podcasts and episodes by term
+        body:
+          type: json
+          data:
+            query: '{ searchForTerm(term: "{{tools.search_term}}", searchContentType: PODCASTSERIES) { searchId podcastSeries
+              { uuid name description imageUrl } } }'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.data.searchForTerm
+      - name: get-podcast-episode
+        method: POST
+        description: Retrieve episode details including transcript
+        body:
+          type: json
+          data:
+            query: '{ getPodcastEpisode(uuid: "{{tools.episode_uuid}}") { uuid name description audioUrl duration datePublished
+              transcript episodeNumber seasonNumber } }'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.data.getPodcastEpisode
+      - name: get-top-charts
+        method: POST
+        description: Retrieve top chart podcasts by country
+        body:
+          type: json
+          data:
+            query: '{ getTopChartsByCountry(taddyType: PODCASTSERIES, country: {{tools.country}}) { podcastSeries { uuid name
+              imageUrl popularityRank { rank } } } }'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.data.getTopChartsByCountry
+      - name: get-api-requests-remaining
+        method: POST
+        description: Check remaining monthly API request quota
+        body:
+          type: json
+          data:
+            query: '{ getApiRequestsRemaining }'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: integer
+          value: $.data.getApiRequestsRemaining
   exposes:
-    - type: rest
-      port: 8080
-      namespace: podcast-discovery-api
-      description: "Unified REST API for podcast discovery and content analysis."
-      resources:
-        - path: /v1/podcasts
-          name: podcasts
-          description: "Search and discover podcast series"
-          operations:
-            - method: GET
-              name: search-podcasts
-              description: "Search for podcasts by keyword"
-              call: "taddy-podcast.search-podcasts"
-              with:
-                search_term: "rest.term"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/podcasts/{name}
-          name: podcast-detail
-          description: "Get detailed podcast series information"
-          operations:
-            - method: GET
-              name: get-podcast-series
-              description: "Get full podcast series metadata"
-              call: "taddy-podcast.get-podcast-series"
-              with:
-                podcast_name: "rest.name"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/episodes/{uuid}
-          name: episode-detail
-          description: "Get episode details with transcript"
-          operations:
-            - method: GET
-              name: get-podcast-episode
-              description: "Retrieve episode metadata and full transcript"
-              call: "taddy-podcast.get-podcast-episode"
-              with:
-                episode_uuid: "rest.uuid"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/top-charts
-          name: top-charts
-          description: "Top charting podcasts by country"
-          operations:
-            - method: GET
-              name: get-top-charts
-              description: "Get top podcasts for a country"
-              call: "taddy-podcast.get-top-charts"
-              with:
-                country: "rest.country"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/quota
-          name: api-quota
-          description: "API usage quota status"
-          operations:
-            - method: GET
-              name: get-api-requests-remaining
-              description: "Check remaining API request quota for the month"
-              call: "taddy-podcast.get-api-requests-remaining"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: podcast-discovery-mcp
-      transport: http
-      description: "MCP server for AI-assisted podcast discovery and content research."
-      tools:
-        - name: search-podcasts
-          description: "Search for podcast series by topic, name, or keyword"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "taddy-podcast.search-podcasts"
-          with:
-            search_term: "tools.search_term"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-podcast-series
-          description: "Get full metadata for a podcast series including genre, language, host information, and episode count"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "taddy-podcast.get-podcast-series"
-          with:
-            podcast_name: "tools.podcast_name"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-podcast-episode
-          description: "Retrieve a podcast episode with full transcript, chapters, and contributor information"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "taddy-podcast.get-podcast-episode"
-          with:
-            episode_uuid: "tools.episode_uuid"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-top-charts
-          description: "Discover the most popular podcasts in a specific country"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "taddy-podcast.get-top-charts"
-          with:
-            country: "tools.country"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: check-api-quota
-          description: "Check how many API requests remain in the current billing period"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "taddy-podcast.get-api-requests-remaining"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: podcast-discovery-api
+    description: Unified REST API for podcast discovery and content analysis.
+    resources:
+    - path: /v1/podcasts
+      name: podcasts
+      description: Search and discover podcast series
+      operations:
+      - method: GET
+        name: search-podcasts
+        description: Search for podcasts by keyword
+        call: taddy-podcast.search-podcasts
+        with:
+          search_term: rest.term
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/podcasts/{name}
+      name: podcast-detail
+      description: Get detailed podcast series information
+      operations:
+      - method: GET
+        name: get-podcast-series
+        description: Get full podcast series metadata
+        call: taddy-podcast.get-podcast-series
+        with:
+          podcast_name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/episodes/{uuid}
+      name: episode-detail
+      description: Get episode details with transcript
+      operations:
+      - method: GET
+        name: get-podcast-episode
+        description: Retrieve episode metadata and full transcript
+        call: taddy-podcast.get-podcast-episode
+        with:
+          episode_uuid: rest.uuid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/top-charts
+      name: top-charts
+      description: Top charting podcasts by country
+      operations:
+      - method: GET
+        name: get-top-charts
+        description: Get top podcasts for a country
+        call: taddy-podcast.get-top-charts
+        with:
+          country: rest.country
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/quota
+      name: api-quota
+      description: API usage quota status
+      operations:
+      - method: GET
+        name: get-api-requests-remaining
+        description: Check remaining API request quota for the month
+        call: taddy-podcast.get-api-requests-remaining
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: podcast-discovery-mcp
+    transport: http
+    description: MCP server for AI-assisted podcast discovery and content research.
+    tools:
+    - name: search-podcasts
+      description: Search for podcast series by topic, name, or keyword
+      hints:
+        readOnly: true
+        openWorld: true
+      call: taddy-podcast.search-podcasts
+      with:
+        search_term: tools.search_term
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-podcast-series
+      description: Get full metadata for a podcast series including genre, language, host information, and episode count
+      hints:
+        readOnly: true
+        openWorld: false
+      call: taddy-podcast.get-podcast-series
+      with:
+        podcast_name: tools.podcast_name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-podcast-episode
+      description: Retrieve a podcast episode with full transcript, chapters, and contributor information
+      hints:
+        readOnly: true
+        openWorld: false
+      call: taddy-podcast.get-podcast-episode
+      with:
+        episode_uuid: tools.episode_uuid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-top-charts
+      description: Discover the most popular podcasts in a specific country
+      hints:
+        readOnly: true
+        openWorld: true
+      call: taddy-podcast.get-top-charts
+      with:
+        country: tools.country
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: check-api-quota
+      description: Check how many API requests remain in the current billing period
+      hints:
+        readOnly: true
+        openWorld: false
+      call: taddy-podcast.get-api-requests-remaining
+      outputParameters:
+      - type: object
+        mapping: $.
