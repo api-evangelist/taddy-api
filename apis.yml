@@ -45,7 +45,7 @@ apis:
     properties:
       - type: Documentation
         url: https://taddy.org/developers/podcast-api
-      - type: Getting Started
+      - type: GettingStarted
         url: https://taddy.org/developers/intro-to-taddy-graphql-api
       - type: GraphQL Schema
         url: https://ax0.taddy.org/docs/schema.graphql
@@ -71,9 +71,9 @@ common:
     url: https://taddy.org/developers
   - type: Documentation
     url: https://taddy.org/developers/podcast-api
-  - type: Getting Started
+  - type: GettingStarted
     url: https://taddy.org/developers/intro-to-taddy-graphql-api
-  - type: Sign Up
+  - type: SignUp
     url: https://taddy.org/register
   - type: Website
     url: https://taddy.org/
