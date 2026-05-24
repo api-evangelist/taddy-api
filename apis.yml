@@ -92,6 +92,8 @@ common:
   url: https://raw.githubusercontent.com/api-evangelist/taddy-api/refs/heads/main/json-schema/taddy-podcast-episode-schema.json
 - type: Vocabulary
   url: https://raw.githubusercontent.com/api-evangelist/taddy-api/refs/heads/main/vocabulary/taddy-api-vocabulary.yml
+- type: LLMsTxt
+  url: https://taddy.org/llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
