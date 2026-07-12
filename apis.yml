@@ -62,6 +62,10 @@ apis:
   - type: Documentation
     url: https://taddy.org/developers/comics-api
 common:
+- type: DomainSecurity
+  url: security/taddy-api-domain-security.yml
+- type: Authentication
+  url: authentication/taddy-api-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/showcase/taddy-developers
 - type: Portal
@@ -98,6 +102,8 @@ common:
   url: https://raw.githubusercontent.com/api-evangelist/taddy-api/refs/heads/main/vocabulary/taddy-api-vocabulary.yml
 - type: LlmsText
   url: https://taddy.org/llms.txt
+- url: https://taddy.org/blog
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
