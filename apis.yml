@@ -62,6 +62,8 @@ apis:
   - type: Documentation
     url: https://taddy.org/developers/comics-api
 common:
+- type: AgenticAccess
+  url: agentic-access/taddy-api-agentic-access.yml
 - type: DomainSecurity
   url: security/taddy-api-domain-security.yml
 - type: Authentication
