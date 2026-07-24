@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Taddy Podcast GraphQL API
+  description: GraphQL-based API providing access to over 4 million podcasts and 200 million episodes. Features include podcast and episode search, transcript retrieval, top charts, real-time webhooks, and detailed metadata including genres, persons, chapters, and transcription status. All requests are POST to a single GraphQL endpoint.
+  version: 1.0.0
+  contact:
+    name: Taddy Developer Support
+    url: https://taddy.org/developers
+  termsOfService: https://taddy.org/terms
+servers:
+- url: https://api.taddy.org
+  description: Taddy GraphQL API
+security:
+- ApiKeyAuth: []
+  UserIdAuth: []
+tags:
+- name: GraphQL
+paths:
+  /:
+    post:
+      operationId: executeGraphQLQuery
+      summary: Execute GraphQL Query
+      description: Execute a GraphQL query against the Taddy API. Supports queries for podcast series, episodes, search, top charts, transcripts, and webhooks.
+      tags:
+      - GraphQL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            examples:
+              GetPodcastSeries:
+                summary: Get Podcast Series
+                value:
+                  query: "{ getPodcastSeries(name: \"This American Life\") {\n  uuid name description imageUrl totalEpisodesCount\n  genres { name }\n  language { name }\n} }"
+              SearchPodcasts:
+                summary: Search Podcasts
+                value:
+                  query: "{ searchForTerm(term: \"technology\", searchContentType: PODCASTSERIES) {\n  searchId podcastSeries {\n    uuid name description imageUrl\n  }\n} }"
+              GetPodcastEpisode:
+                summary: Get Podcast Episode
+                value:
+                  query: "{ getPodcastEpisode(uuid: \"episode-uuid\") {\n  uuid name description audioUrl duration datePublished\n  transcript\n} }"
+              GetTopCharts:
+                summary: Get Top Charts
+                value:
+                  query: "{ getTopChartsByCountry(taddyType: PODCASTSERIES, country: US) {\n  podcastSeries { uuid name imageUrl popularityRank { rank } }\n} }"
+              GetApiRequestsRemaining:
+                summary: Get API Requests Remaining
+                value:
+                  query: '{ getApiRequestsRemaining }'
+      responses:
+        '200':
+          description: GraphQL response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLResponse'
+        '400':
+          description: Bad request - invalid GraphQL query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLError'
+        '401':
+          description: Unauthorized - invalid or missing API key
+        '429':
+          description: Too Many Requests - rate limit exceeded
+components:
+  schemas:
+    GraphQLError:
+      type: object
+      properties:
+        message:
+          type: string
+        locations:
+          type: array
+          items:
+            type: object
+            properties:
+              line:
+                type: integer
+              column:
+                type: integer
+        path:
+          type: array
+          items:
+            type: string
+    GraphQLResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: GraphQL response data
+          additionalProperties: true
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphQLError'
+    GraphQLRequest:
+      type: object
+      required:
+      - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query string
+        variables:
+          type: object
+          description: GraphQL variables for the query
+          additionalProperties: true
+        operationName:
+          type: string
+          description: Optional name for the GraphQL operation
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Your Taddy API key from the developer dashboard
+    UserIdAuth:
+      type: apiKey
+      in: header
+      name: X-USER-ID
+      description: Your Taddy user ID from the developer dashboard
+externalDocs:
+  description: Taddy API Documentation
+  url: https://taddy.org/developers
