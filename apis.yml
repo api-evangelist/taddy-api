@@ -6,9 +6,22 @@ description: >-
   building podcast applications by aggregating and standardizing RSS feed data at scale with daily updates of 1,000 new
   podcasts and 50,000 new episodes.
 type: Index
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/taddy-api.png
 tags:
 - Audio
 - Comics
@@ -22,36 +35,10 @@ modified: '2026-05-19'
 url: https://raw.githubusercontent.com/api-evangelist/taddy-api/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
-- aid: taddy-api:taddy-podcast-api
-  name: Taddy Podcast API
-  description: >-
-    GraphQL API providing access to over 4 million podcasts and 200 million episodes. Supports podcast and episode
-    search, transcript retrieval with speaker and timecode data, top charts by country, webhooks for real-time updates
-    and brand monitoring, and detailed metadata including genres, persons, chapters, and transcription status.
-  humanURL: https://taddy.org/developers/podcast-api
-  baseURL: https://api.taddy.org
-  tags:
-  - Audio
-  - Episodes
-  - GraphQL
-  - Podcasts
-  - Search
-  - Transcripts
-  - Webhooks
-  properties:
-  - type: Documentation
-    url: https://taddy.org/developers/podcast-api
-  - type: GettingStarted
-    url: https://taddy.org/developers/intro-to-taddy-graphql-api
-  - type: GraphQLSchema
-    url: https://ax0.taddy.org/docs/schema.graphql
-  - type: OpenAPI
-    url: https://raw.githubusercontent.com/api-evangelist/taddy-api/refs/heads/main/openapi/taddy-podcast-openapi.yml
-  - url: graphql/taddy-api-graphql.md
-    type: GraphQL
 - aid: taddy-api:taddy-comics-api
   name: Taddy Comics API
-  description: GraphQL API for accessing comic book series, issues, and creator data from the Taddy comic book database.
+  description: >-
+    GraphQL API for accessing comic book series, issues, and creator data from the Taddy comic book database.
   humanURL: https://taddy.org/developers/comics-api
   baseURL: https://api.taddy.org
   tags:
@@ -61,7 +48,27 @@ apis:
   properties:
   - type: Documentation
     url: https://taddy.org/developers/comics-api
+- aid: taddy-api:taddy-api-graphql-api
+  name: Taddy API GraphQL API
+  description: The GraphQL API from Taddy API — 1 operation(s) for graphql.
+  humanURL: https://taddy.org/developers/podcast-api
+  baseURL: https://api.taddy.org
+  tags:
+  - GraphQL
+  properties:
+  - type: OpenAPI
+    url: openapi/taddy-api-graphql-api-openapi.yml
+  - type: Documentation
+    url: https://taddy.org/developers/podcast-api
+  - type: GettingStarted
+    url: https://taddy.org/developers/intro-to-taddy-graphql-api
+  - type: GraphQLSchema
+    url: https://ax0.taddy.org/docs/schema.graphql
+  - type: GraphQL
+    url: graphql/taddy-api-graphql.md
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/taddy-api/overview
 - type: AgenticAccess
   url: agentic-access/taddy-api-agentic-access.yml
 - type: DomainSecurity
