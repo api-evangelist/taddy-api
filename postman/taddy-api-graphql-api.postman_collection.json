@@ -1,0 +1,300 @@
+{
+  "info": {
+    "_postman_id": "254212f0-d821-419b-8b15-6a72ab1a70f7",
+    "name": "Taddy Podcast GraphQL API",
+    "description": "GraphQL-based API providing access to over 4 million podcasts and 200 million episodes. Features include podcast and episode search, transcript retrieval, top charts, real-time webhooks, and detailed metadata including genres, persons, chapters, and transcription status. All requests are POST to a single GraphQL endpoint.\n\nContact Support:\n Name: Taddy Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:07:43.000Z",
+    "updatedAt": "2026-07-28T03:07:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-254212f0-d821-419b-8b15-6a72ab1a70f7"
+  },
+  "item": [
+    {
+      "name": "/",
+      "item": [
+        {
+          "name": "Execute GraphQL Query",
+          "id": "fce1927f-5faf-4e96-883c-f59d6e039d72",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"Duis6\": -19325066.794535846,\n    \"aliquip_700\": true,\n    \"aliquip_3\": false\n  },\n  \"operationName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Execute a GraphQL query against the Taddy API. Supports queries for podcast series, episodes, search, top charts, transcripts, and webhooks."
+          },
+          "response": [
+            {
+              "id": "60cc4f79-85c4-45e1-a8c7-37e3298bd445",
+              "name": "GraphQL response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"Duis6\": -19325066.794535846,\n    \"aliquip_700\": true,\n    \"aliquip_3\": false\n  },\n  \"operationName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"quis_8e\": false,\n    \"sed07\": false,\n    \"deserunt3\": false\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"locations\": [\n        {\n          \"line\": \"<integer>\",\n          \"column\": \"<integer>\"\n        },\n        {\n          \"line\": \"<integer>\",\n          \"column\": \"<integer>\"\n        }\n      ],\n      \"path\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"message\": \"<string>\",\n      \"locations\": [\n        {\n          \"line\": \"<integer>\",\n          \"column\": \"<integer>\"\n        },\n        {\n          \"line\": \"<integer>\",\n          \"column\": \"<integer>\"\n        }\n      ],\n      \"path\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T03:07:44.000Z",
+              "updatedAt": "2026-07-28T03:07:44.000Z",
+              "uid": "35240-60cc4f79-85c4-45e1-a8c7-37e3298bd445"
+            },
+            {
+              "id": "0681096a-6bc4-477f-876c-2c560980cb34",
+              "name": "Bad request - invalid GraphQL query",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"Duis6\": -19325066.794535846,\n    \"aliquip_700\": true,\n    \"aliquip_3\": false\n  },\n  \"operationName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"locations\": [\n    {\n      \"line\": \"<integer>\",\n      \"column\": \"<integer>\"\n    },\n    {\n      \"line\": \"<integer>\",\n      \"column\": \"<integer>\"\n    }\n  ],\n  \"path\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "createdAt": "2026-07-28T03:07:44.000Z",
+              "updatedAt": "2026-07-28T03:07:44.000Z",
+              "uid": "35240-0681096a-6bc4-477f-876c-2c560980cb34"
+            },
+            {
+              "id": "77eb4460-5f1f-44d1-86fc-8ba6aec3f94b",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"Duis6\": -19325066.794535846,\n    \"aliquip_700\": true,\n    \"aliquip_3\": false\n  },\n  \"operationName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:07:44.000Z",
+              "updatedAt": "2026-07-28T03:07:44.000Z",
+              "uid": "35240-77eb4460-5f1f-44d1-86fc-8ba6aec3f94b"
+            },
+            {
+              "id": "c1164f3c-888a-4c76-85c8-567d02660a2b",
+              "name": "Too Many Requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"Duis6\": -19325066.794535846,\n    \"aliquip_700\": true,\n    \"aliquip_3\": false\n  },\n  \"operationName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:07:44.000Z",
+              "updatedAt": "2026-07-28T03:07:44.000Z",
+              "uid": "35240-c1164f3c-888a-4c76-85c8-567d02660a2b"
+            }
+          ],
+          "createdAt": "2026-07-28T03:07:44.000Z",
+          "updatedAt": "2026-07-28T03:07:44.000Z",
+          "uid": "35240-fce1927f-5faf-4e96-883c-f59d6e039d72"
+        }
+      ],
+      "id": "a5246115-722c-44ef-a84d-3aeb740042a2",
+      "createdAt": "2026-07-28T03:07:44.000Z",
+      "updatedAt": "2026-07-28T03:07:44.000Z",
+      "uid": "35240-a5246115-722c-44ef-a84d-3aeb740042a2"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.taddy.org"
+    }
+  ]
+}

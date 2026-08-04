@@ -1,0 +1,14 @@
+{
+  "provider": "taddy-api",
+  "sources": [
+    "taddy-api-graphql-api-openapi.yml"
+  ],
+  "outputs": [
+    "taddy-api-graphql-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
