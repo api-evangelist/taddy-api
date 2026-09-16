@@ -69,16 +69,16 @@ apis:
   properties:
   - type: Documentation
     url: https://taddy.org/developers/comics-api
-- aid: taddy-api:taddy-api-graphql-api
-  name: Taddy API GraphQL API
-  description: The GraphQL API from Taddy API — 1 operation(s) for graphql.
-  humanURL: https://taddy.org/developers/podcast-api
+- aid: taddy-api:taddy-api-graph-ql-api
+  name: Taddy API Graph QL API
+  description: The Graph QL API from Taddy API — 1 operation(s) for graph ql.
+  humanURL: https://taddy.org/developers/comics-api
   baseURL: https://api.taddy.org
   tags:
-  - GraphQL
+  - Graph QL
   properties:
   - type: OpenAPI
-    url: openapi/taddy-api-graphql-api-openapi.yml
+    url: openapi/taddy-api-graph-ql-api-openapi.yml
   - type: Documentation
     url: https://taddy.org/developers/podcast-api
   - type: GettingStarted
