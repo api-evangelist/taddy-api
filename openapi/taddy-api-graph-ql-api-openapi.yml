@@ -14,7 +14,7 @@ security:
 - ApiKeyAuth: []
   UserIdAuth: []
 tags:
-- name: GraphQL
+- name: Graph QL
 paths:
   /:
     post:
@@ -22,7 +22,7 @@ paths:
       summary: Execute GraphQL Query
       description: Execute a GraphQL query against the Taddy API. Supports queries for podcast series, episodes, search, top charts, transcripts, and webhooks.
       tags:
-      - GraphQL
+      - Graph QL
       requestBody:
         required: true
         content:
