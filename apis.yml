@@ -75,8 +75,6 @@ apis:
   humanURL: https://taddy.org/developers/comics-api
   baseURL: https://api.taddy.org
   tags:
-  - GraphQL
-  tags_raw:
   - Graph QL
   properties:
   - type: OpenAPI

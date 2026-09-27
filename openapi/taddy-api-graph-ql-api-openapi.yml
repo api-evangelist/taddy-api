@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Taddy Podcast Graph QL API
+  title: Taddy Podcast GraphQL API
   description: GraphQL-based API providing access to over 4 million podcasts and 200 million episodes. Features include podcast and episode search, transcript retrieval, top charts, real-time webhooks, and detailed metadata including genres, persons, chapters, and transcription status. All requests are POST to a single GraphQL endpoint.
   version: 1.0.0
   contact:
@@ -69,21 +69,6 @@ paths:
           description: Too Many Requests - rate limit exceeded
 components:
   schemas:
-    GraphQLRequest:
-      type: object
-      required:
-      - query
-      properties:
-        query:
-          type: string
-          description: GraphQL query string
-        variables:
-          type: object
-          description: GraphQL variables for the query
-          additionalProperties: true
-        operationName:
-          type: string
-          description: Optional name for the GraphQL operation
     GraphQLError:
       type: object
       properties:
@@ -102,6 +87,21 @@ components:
           type: array
           items:
             type: string
+    GraphQLRequest:
+      type: object
+      required:
+      - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query string
+        variables:
+          type: object
+          description: GraphQL variables for the query
+          additionalProperties: true
+        operationName:
+          type: string
+          description: Optional name for the GraphQL operation
     GraphQLResponse:
       type: object
       properties:
