@@ -69,24 +69,6 @@ paths:
           description: Too Many Requests - rate limit exceeded
 components:
   schemas:
-    GraphQLError:
-      type: object
-      properties:
-        message:
-          type: string
-        locations:
-          type: array
-          items:
-            type: object
-            properties:
-              line:
-                type: integer
-              column:
-                type: integer
-        path:
-          type: array
-          items:
-            type: string
     GraphQLRequest:
       type: object
       required:
@@ -113,6 +95,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GraphQLError'
+    GraphQLError:
+      type: object
+      properties:
+        message:
+          type: string
+        locations:
+          type: array
+          items:
+            type: object
+            properties:
+              line:
+                type: integer
+              column:
+                type: integer
+        path:
+          type: array
+          items:
+            type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
